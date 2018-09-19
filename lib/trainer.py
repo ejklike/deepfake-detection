@@ -23,7 +23,7 @@ def save_optimizer(optimizer_path, optimizer):
 
 
 class Trainer:
-    def __init__(self, model_dir='./output', model=None, # model_name=None,
+    def __init__(self, model_dir='./output', model=None,
                  no_cuda=False, seed=1, lr=5e-5):
 
         # Hyperparameters
@@ -40,9 +40,7 @@ class Trainer:
         self.device = t.device("cuda" if self.use_cuda else "cpu")
 
         # Model
-        assert model is not None # and model_name is not None
-        # model_path = self.get_path('model_{}.pth'.format(model_name))
-        # optim_path = self.get_path('optim_{}.pth'.format(model_name))
+        assert model is not None
         model_path = self.get_path('model.pth')
         optim_path = self.get_path('optim.pth')
         self.model = self.get_model(model, path=model_path)
@@ -144,12 +142,6 @@ class Trainer:
                 prec_denom += pred.sum().item()
                 rec_denom += target.sum().item()
 
-                # print(correct_t)
-                # print(pred * target)
-                # print(correct_t.sum().item(), (pred * target).sum().item())
-                # print(correct, true_positives)
-                # # print(correct, true_positives, prec_denom, rec_denom)
-
         test_loss /= len(dataloader.dataset)
         accuracy = correct / len(dataloader.dataset)
         precision = true_positives / prec_denom
@@ -177,15 +169,13 @@ class Trainer:
                     return 'true_positive'
                 else: 
                     return 'true_negative'
-            # misclassified
-            else:
+            else: # misclassified
                 if fake == 1: 
                     return 'false_negative'
                 else: 
                     return 'false_positive'
-        # print(len(correct_label), len(image_paths_and_labels))
+
         for correct, (path, fake) in zip(correct_label, image_paths_and_labels):
-            # print(correct_label)
             target_dir = mkdir(os.path.join(
                 self.model_dir, 'test_images', _confusion_result(correct, fake)))
             copy(path, target_dir)

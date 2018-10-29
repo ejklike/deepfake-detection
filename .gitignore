@@ -1,8 +1,12 @@
 __pycache__
 .vscode
+.ipynb_checkpoints
 
 model_dir
-data
+data*
 tmp
+steg
+viz_filter
 
-test.py
+*.txt
+*.ipynb
